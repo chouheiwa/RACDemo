@@ -24,6 +24,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    @weakify(self);
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] init];
+    
+    [gesture.rac_gestureSignal subscribeNext:^(id x) {
+        @strongify(self);
+        [self.userNameTextField resignFirstResponder];
+        [self.passwordTextField resignFirstResponder];
+    }];
+    
+    [self.view addGestureRecognizer:gesture];
     
     _viewModel = [[LoginViewModel alloc] init];
     
@@ -31,7 +41,7 @@
     [self.loginButton setTitleColor:[UIColor cyanColor] forState:(UIControlStateNormal)];
     
     [self addBind];
-    @weakify(self);
+    
     //button的点击事件用RAC调用
     [[self.loginButton rac_signalForControlEvents:(UIControlEventTouchUpInside)] subscribeNext:^(id x) {
         @strongify(self);

@@ -16,6 +16,7 @@
 
 - (instancetype)init {
     if (self = [super init]) {
+        
         @weakify(self);
         [[RACObserve(self, name) filter:^BOOL(id value) {
             return value != nil;
